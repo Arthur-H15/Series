@@ -70,7 +70,7 @@ namespace Series
 
 
             string genero = "";
-            while (genero.ToUpper() != "F")
+            if (genero.ToUpper() != "F")
             {
                 foreach (var series in lista)
                 {
@@ -78,8 +78,9 @@ namespace Series
 
                     Console.WriteLine("#ID {0}: - {1} {2}", series.retornaid(), series.retornatitulo(), (excluido ? "*Excluído*" : ""));
                 }
-                Console.WriteLine("digite F se deseja filtra por genero");
+                Console.WriteLine("digite F se deseja filtra por genero ou X para sair");
                 genero = Console.ReadLine(); }
+             if (genero.ToUpper()!="X"){ 
             foreach (int i in Enum.GetValues(typeof(generos)))
             {
 
@@ -95,7 +96,8 @@ namespace Series
             {
                 var excluido = filme.retornaExcluido();
                 Console.WriteLine("#ID {0}: - {1} {2}", filme.retornaid(), filme.retornatitulo(), (excluido ? "*Excluído*" : ""));
-            }
+            }}
+            else { return; }
 
 
 
@@ -208,13 +210,20 @@ namespace Series
         { var lista = serierepositorio.lista();
             if (lista.Count > 0)
             {
+                var vs = serierepositorio.lista();
+                foreach (var series in vs)
+                {
+                    var excluido = series.retornaExcluido();
+
+                    Console.WriteLine("#ID {0}: - {1} {2}", series.retornaid(), series.retornatitulo(), (excluido ? "*Excluído*" : ""));
+                }
                 Console.Write("Digite o id da série: ");
                 int indiceSerie = int.Parse(Console.ReadLine());
                 var serie = serierepositorio.retornaporid(indiceSerie);
                 Console.WriteLine($"deseja deletar {serie.retornatitulo()} digite S Caso contrario digite X para sair");
                 var select = Console.ReadLine();
                 while (select.ToUpper() != "X")
-                { serierepositorio.excluir(indiceSerie); }
+                { serierepositorio.excluir(indiceSerie); return; }
                 return;
             }
             Console.WriteLine("Nao existe Series.");
@@ -223,13 +232,22 @@ namespace Series
         }
         private static void visualizar()
         {
-            Console.WriteLine(serierepositorio.lista());
+            
+            Console.WriteLine();
+            var vs = serierepositorio.lista();
+            foreach (var series in vs)
+            {
+                var excluido = series.retornaExcluido();
+
+                Console.WriteLine("#ID {0}: - {1} {2}", series.retornaid(), series.retornatitulo(), (excluido ? "*Excluído*" : ""));
+            }
+
             Console.Write("Digite o id da série: ");
             int indiceSerie = int.Parse(Console.ReadLine());
 
             var serie = serierepositorio.retornaporid(indiceSerie);
 
-            Console.WriteLine(serie);
+            Console.WriteLine(serie.ToString());
         }
         private static string opçaousuario()
         {
